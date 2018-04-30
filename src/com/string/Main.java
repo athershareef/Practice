@@ -1,7 +1,6 @@
 package com.string;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -9,23 +8,42 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println(isPermutationPalindrome("never odd or even "));
+        System.out.println(compressN("abcdaaaaa"));
 
     }
 
-    public static boolean isPermutationPalindrome(String str){
+    public static String compressN(String str) {
 
         HashMap<Character, Integer> map = new HashMap<Character, Integer>();
 
-        for(int i=0; i<str.length(); i++){
-            map.put(str.charAt(i), map.getOrDefault(str.charAt(i), 0) +1);
+        for (int i = 0; i < str.length(); i++) {
+            map.put(str.charAt(i), map.getOrDefault(str.charAt(i), 0) + 1);
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (Character key : map.keySet()) {
+            sb.append(key);
+            sb.append(map.get(key));
+        }
+
+        return sb.toString().length() < str.length() ? sb.toString() : str;
+
+    }
+
+    public static boolean isPermutationPalindromeN(String str) {
+
+        HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+
+        for (int i = 0; i < str.length(); i++) {
+            map.put(str.charAt(i), map.getOrDefault(str.charAt(i), 0) + 1);
         }
 
         boolean isOdd = false;
 
-        for(Integer each: map.values()){
-            if(each % 2 != 0 ){
-                if(isOdd){
+        for (Integer each : map.values()) {
+            if (each % 2 != 0) {
+                if (isOdd) {
                     return false;
                 }
                 isOdd = true;
@@ -41,24 +59,24 @@ public class Main {
     }
 
     private static HashSet<String> permutation(String prefix, String str, HashSet<String> result) {
-        if(str.length() == 0){
+        if (str.length() == 0) {
             result.add(prefix);
             return result;
         }
-        for(int i =0; i< str.length(); i++){
-            result = permutation(prefix + str.charAt(i), str.substring(0,i) + str.substring(i+1,str.length()), result);
+        for (int i = 0; i < str.length(); i++) {
+            result = permutation(prefix + str.charAt(i), str.substring(0, i) + str.substring(i + 1, str.length()), result);
         }
 
         return result;
     }
 
-    public static boolean containsDuplicateCharN2(String str){
-        for(int i = 0; i< str.length() ; i++){
+    public static boolean containsDuplicateCharN2(String str) {
+        for (int i = 0; i < str.length(); i++) {
             char each = str.charAt(i);
 
-            for(int j= i+1; j< str.length(); j++ ){
+            for (int j = i + 1; j < str.length(); j++) {
 
-                if(each == str.charAt(j)){
+                if (each == str.charAt(j)) {
                     return true;
                 }
 
@@ -68,15 +86,15 @@ public class Main {
 
     }
 
-    public static boolean containsDuplicateCharNLOGN(String str){
+    public static boolean containsDuplicateCharNLOGN(String str) {
 
-        char [] charArr = str.toCharArray();
+        char[] charArr = str.toCharArray();
 
         Arrays.sort(charArr);
         System.out.println(charArr);
 
-        for(int i = 0; i < charArr.length-1 ; i++){
-            if(charArr[i] == charArr[i+1]){
+        for (int i = 0; i < charArr.length - 1; i++) {
+            if (charArr[i] == charArr[i + 1]) {
                 return true;
             }
         }
