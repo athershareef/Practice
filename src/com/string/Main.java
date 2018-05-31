@@ -1,14 +1,12 @@
 package com.string;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println(compressN("abcdaaaaa"));
+        System.out.println(validParenthesis("[(])"));
 
     }
 
@@ -100,6 +98,43 @@ public class Main {
         }
 
         return false;
+
+    }
+
+    public static boolean validParenthesis(String str){
+
+        char[] charArray = str.toCharArray();
+
+        ArrayList<Character> opening = new ArrayList<>();
+        opening.add('{');
+        opening.add('(');
+        opening.add('[');
+
+        ArrayList<Character> closing = new ArrayList<>();
+        closing.add('}');
+        closing.add(')');
+        closing.add(']');
+
+        HashMap<Character,Character> map = new HashMap<>();
+
+        map.put('}','{');
+        map.put(')','(');
+        map.put(']','[');
+
+        Stack<Character> stack = new Stack<>();
+
+
+        for(int i =0; i < charArray.length; i++){
+            if(opening.contains(charArray[i] )){
+                stack.push(charArray[i]);
+            } else if(closing.contains((charArray[i]))){
+                if(map.get(charArray[i]) != stack.pop()){
+                    return false;
+                }
+            }
+        }
+
+        return stack.size() < 1;
 
     }
 
