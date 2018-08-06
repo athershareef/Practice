@@ -1,0 +1,1 @@
+1. Confusion in size, length, length() with arrays and Strings

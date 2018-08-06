@@ -13,7 +13,63 @@ public class MediumMain {
 
 //            System.out.println(longestCommonPrefix(new String[]{"whatcanIdo", "whatcanIdo", "bhatcanIdo"}));
 //        System.out.println(removeDuplicatesSorted(new int[] {0,0,1,1,1,2,2,3,3,4}));
-        System.out.println(removeNumberFromArray(new int[] {4,5}, 5));
+        System.out.println(Arrays.toString(mergeSorted(new int[] {1,4,8,12,13},5, new int[] {2,5,10,11}, 4)));
+    }
+
+
+    public static int[] mergeSorted(int[] nums1, int m, int[] nums2, int n) {
+        int [] result = new int[m+n];
+        for(int i = 0, j = 0, index = 0; index < m+n && i < m && j < n; index++){
+            if(nums1[i] > nums2[j]){
+                result[index] = nums2[j];
+                j++;
+            } else {
+                result[index] = nums1[i];
+                i++;
+            }
+        }
+
+        return result;
+    }
+
+
+
+
+    public static int lengthOfLastWord(String s) {
+        String[] array = s.split(" ");
+        return array.length==0? 0:array[array.length -1].length();
+    }
+
+
+    public static int searchInsert(int[] nums, int target) {
+        for(int i = 0 ; i < nums.length; i++){
+            if(nums[i]>=target){
+                return i;
+            }
+        }
+
+        if(nums[0]>target){
+            return 0;
+        }
+        return nums.length;
+    }
+
+    public static int subString(String haystack, String needle) {
+        if(haystack.length() < needle.length()){
+            String temp = needle;
+            needle = haystack;
+            haystack = needle;
+        }
+
+        for(int i = 0; i < haystack.length() - needle.length() ; i++){
+
+            if(haystack.substring(i,i+needle.length()).equals(needle)){
+                return i;
+            }
+
+        }
+
+        return -1;
     }
 
     public static int removeNumberFromArray(int[] array, int val){
