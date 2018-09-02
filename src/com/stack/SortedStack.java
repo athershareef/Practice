@@ -6,7 +6,6 @@ public class SortedStack  extends Stack<Integer> {
         Stack<Integer> tempStack = new Stack<Integer>();
 
         public Integer push(Integer val){
-
             if(tempStack.isEmpty()){
                 tempStack.push(val);
                 return super.push(val);

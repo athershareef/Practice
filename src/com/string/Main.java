@@ -1,15 +1,83 @@
 package com.string;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println(compressN("abcdaaaaa"));
+//        System.out.println(maxSubStringDistinctCharacters("geeksgeeksfor"));
 
+            CountingPrimeSubmatrix(new int[][]{ {3,5,6}, {8,3,2}, {3,5,2}});
+
+    }
+
+    private static void CountingPrimeSubmatrix(int[][] ints) {
+
+    }
+
+    public static boolean isPrime(int n)
+    {
+        if(n<2)
+            return false;
+        for(int i=2;i<=Math.sqrt(n);i++)
+        {
+            if(n%i==0)
+                return false;
+        }
+        return true;
+    }
+
+    public static int maxSubStringDistinctCharacters(String str){
+
+        int maxDistinctChars = 0;
+        int minStringLen = 10;
+        for(int i = 0; i < str.length(); i++){
+            for(int j = i ; j < str.length(); j++){
+                int max = findDistinctChars(str.substring(i, j+1));
+                if(maxDistinctChars <= max){
+                    minStringLen = j-i+1;
+                    maxDistinctChars = max;
+                }
+           }
+        }
+
+        return minStringLen;
+    }
+
+    private static int findDistinctChars(String str) {
+        HashSet<Character> set = new HashSet<>();
+        for(int i =0; i < str.length(); i++){
+            set.add(str.charAt(i));
+        }
+        return set.size();
+    }
+
+    public static int longestDistinctChars(String str){
+        char [] charArray = str.toCharArray();
+
+        int maxCount = 0;
+
+        int count = 0;
+
+        HashSet<Character> visited = new HashSet<>();
+
+        for(int i =0; i < charArray.length ; i++) {
+            if (visited.contains(charArray[i])) {
+                count = 0;
+                visited.clear();
+            }
+            visited.add(charArray[i]);
+            count++;
+            if (maxCount < count) {
+                maxCount = count;
+            }
+        }
+        return maxCount;
     }
 
     public static String compressN(String str) {
