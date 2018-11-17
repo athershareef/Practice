@@ -2,14 +2,71 @@ package com.amazon;
 
 import com.amazon.utils.ListNode;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Stack;
 
 public class Runner {
     public static void main(String[] args){
-        System.out.println(isValidParenthesis("{{{}}}"));
+        Runner ref = new Runner();
+        System.out.println(ref.numIslands(new char[][]{{'1','1','1','1','0'},{'1','1','0','1','0'},{'1','1','0','0','0'},{'0','0','0','0','0'}}));
     }
+
+    public int numIslands(char[][] grid) {
+        int  count = 0;
+
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] == '1'){
+                    DFS(grid, i, j);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public void DFS(char[][] grid, int row, int col){
+
+        if(row < 0 || col< 0 || row >= grid.length || col >= grid[0].length || grid[row][col] != '1'){
+            return;
+        }
+        // mark visited
+        grid[row][col] = '#';
+        // right
+        DFS(grid , row,col+1);
+        // down
+        DFS(grid , row+1,col);
+        // left
+        DFS(grid , row,col-1);
+        // up
+        DFS(grid, row-1,col);
+
+    }
+
+    public static String mostCommonWord(String paragraph, String[] banned) {
+        HashSet<String> bannedSet = new HashSet<>(Arrays.asList(banned));
+        HashMap<String, Integer> frequencyMap = new HashMap<>();
+        int maxFreq = 0;
+        String maxWord = "";
+        String[] words = paragraph.toLowerCase().replaceAll("\\!|\\?|\\'|\\,|\\;|\\.", " ").split("\\s+");
+        for(String each: words){
+            if(!bannedSet.contains(each)){
+                int count = frequencyMap.getOrDefault(each, 0) + 1;
+                frequencyMap.put(each, count);
+                if(count > maxFreq){
+                    maxFreq = count;
+                    maxWord = each;
+                }
+            }
+        }
+
+        return maxWord;
+    }
+
+
+
 
     public static boolean isValidParenthesis(String s) {
         String open = "{[(";
@@ -50,15 +107,13 @@ public class Runner {
     }
 
     public static int[] twoSum(int[] nums, int target) {
-        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-
-        for(int i =0; i < nums.length; i++){
-            if(map.containsKey(target - nums[i])){
-                return new int[] {map.get(target - nums[i]), i};
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i < nums.length; i++){
+            if(map.containsKey(nums[i])){
+                return new int[] {map.get(nums[i]), i};
             }
-            map.put(nums[i], i);
+            map.put(target-nums[i], i);
         }
-
         return null;
     }
 
