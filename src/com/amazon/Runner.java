@@ -2,16 +2,84 @@ package com.amazon;
 
 import com.amazon.utils.ListNode;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Stack;
+import java.util.*;
 
 public class Runner {
     public static void main(String[] args){
         Runner ref = new Runner();
-        System.out.println(ref.numIslands(new char[][]{{'1','1','1','1','0'},{'1','1','0','1','0'},{'1','1','0','0','0'},{'0','0','0','0','0'}}));
+//        System.out.println(ref.numIslands(new char[][]{{'1','1','1','1','0'},{'1','1','0','1','0'},{'1','1','0','0','0'},{'0','0','0','0','0'}}));
+//        System.out.println(ref.cellCompete(new int[]{1,0,0,0,0,1,0,0}, 1));
+        System.out.println(ref.generalizedGCD(7, new int[]{4,4,4,4,4,4,3}));
     }
+
+    public List<List<Integer>> threeSum(int[] nums) {
+
+        List<List<Integer>> lists = new ArrayList<>();
+
+        for(int i = 0; i < nums.length; i++){
+            int[] result = twoSum(nums, -nums[i]);
+            if(result != null){
+                lists.add(Arrays.asList(nums[i], result[0], result[1]));
+            }
+        }
+
+        return lists;
+
+    }
+
+
+    static int gcd(int a, int b)
+    {
+        if (a == 0)
+            return b;
+        return gcd(b % a, a);
+    }
+
+    public int generalizedGCD(int num, int[] arr)
+    {
+        int gcd = arr[0];
+        for(int i = 1; i < num; i++){
+            gcd = gcd(arr[i], gcd);
+        }
+        return gcd;
+    }
+
+    public List<Integer> cellCompete(int[] states, int days)
+    {
+
+        // WRITE YOUR CODE HERE
+        for(int day = 0; day < days; day++){
+            int[] newState = new int[states.length];
+
+            for(int index = 0; index < states.length; index++){
+                if(index == 0){
+                    newState[index] = states[index+1];
+                }
+                else if(index == states.length -1){
+                    newState[index] = states[index-1];
+                } else if(states[index-1] == 1 ^ states[index+1]==1){
+                    newState[index] = 1;
+                } else{
+                    newState[index] = 0;
+                }
+            }
+            states = Arrays.copyOf(newState, newState.length);
+            if(day == days-1){
+                ArrayList<Integer> list = new ArrayList<>();
+                for(int each: newState){
+                    list.add(each);
+                }
+                return list;
+            }
+        }
+
+        return null;
+
+
+    }
+
+
+
 
     public int numIslands(char[][] grid) {
         int  count = 0;
@@ -71,14 +139,19 @@ public class Runner {
     public static boolean isValidParenthesis(String s) {
         String open = "{[(";
         String close = "}])";
+        if(s.length() % 2 == 1){
+            return false;
+        }
         Stack<Character> stack = new Stack<Character>();
         for(int i = 0; i < s.length(); i++){
             char c = s.charAt(i);
             if(open.indexOf(c) != -1){
                 stack.push(c);
             }
-            else {
-                if(!stack.isEmpty() && open.indexOf(stack.peek()) == close.indexOf(c)) stack.pop();
+            if(!stack.isEmpty() && open.indexOf(stack.peek()) == close.indexOf(c)){
+                stack.pop();
+            } else if(stack.isEmpty() && close.indexOf(c) !=-1){ // i.e. s is having close brackets
+                return false;
             }
         }
 
