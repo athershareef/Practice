@@ -3,14 +3,86 @@ package com.amazon;
 import com.amazon.utils.ListNode;
 
 import java.util.*;
+import java.util.concurrent.PriorityBlockingQueue;
 
 public class Runner {
     public static void main(String[] args){
         Runner ref = new Runner();
 //        System.out.println(ref.numIslands(new char[][]{{'1','1','1','1','0'},{'1','1','0','1','0'},{'1','1','0','0','0'},{'0','0','0','0','0'}}));
 //        System.out.println(ref.cellCompete(new int[]{1,0,0,0,0,1,0,0}, 1));
-        System.out.println(ref.generalizedGCD(7, new int[]{4,4,4,4,4,4,3}));
+//        System.out.println(ref.optimalUtilization(20,  , ));
     }
+
+    List<List<Integer>> optimalUtilization(int maxTravelDist,
+                                           List<List<Integer>> forwardRouteList,
+                                           List<List<Integer>> returnRouteList)
+    {
+        // WRITE YOUR CODE HERE
+        // Max heap
+        PriorityQueue<Integer> queue = new PriorityQueue<>((x, y) -> y - x);
+        HashMap<Integer, List<Integer>> map = new HashMap<>();
+        List<List<Integer>> result = new ArrayList<>();
+
+        for(List<Integer> forwardRoute: forwardRouteList){
+            for(List<Integer> returnRoute: returnRouteList){
+                int distance = forwardRoute.get(1) + returnRoute.get(1);
+                if(distance <=maxTravelDist){
+                    queue.add(distance);
+                    map.put(distance, Arrays.asList(forwardRoute.get(0),returnRoute.get(0)));
+                }
+            }
+        }
+
+        Integer first  = queue.poll();
+        Integer next = first;
+        while(next!=null && next.equals(first)){
+            result.add(first, map.get(first));
+            next = queue.poll();
+        }
+
+        return result;
+
+
+    }
+
+
+    List<List<Integer>> ClosestXdestinations(int numDestinations,
+                                             List<List<Integer>> allLocations,
+                                             int numDeliveries)
+    {
+        // WRITE YOUR CODE HERE
+
+        Queue<Double> distances = new PriorityBlockingQueue<>();
+        HashMap<Double, List<Integer>> map = new HashMap<>();
+        List<List<Integer>> result = new ArrayList<>();
+
+        for(List<Integer> eachLocation: allLocations){
+            double distance = findDistance(eachLocation.get(0), eachLocation.get(1));
+            distances.add(distance);
+            map.put(distance, eachLocation);
+        }
+
+
+
+        for(Double distance: distances){
+            if(numDeliveries < 1){
+                break;
+            }
+            result.add(map.get(distances.poll()));
+            numDeliveries--;
+        }
+
+        return result;
+
+
+
+    }
+    // METHOD SIGNATURE ENDS
+
+    private double findDistance(int x, int y){
+        return Math.sqrt(x*x + y*y);
+    }
+
 
     public List<List<Integer>> threeSum(int[] nums) {
 
